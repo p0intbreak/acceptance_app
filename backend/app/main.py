@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import base64
 import json
+import logging
 import mimetypes
 import os
 import uuid
@@ -15,10 +16,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, ConfigDict
 
 
-ROOT_DIR = Path(__file__).resolve().parents[2]
-STORAGE_DIR = ROOT_DIR / "backend" / "storage"
+APP_DIR = Path(__file__).resolve().parents[1]
+ROOT_DIR = APP_DIR.parent
+STORAGE_DIR = ROOT_DIR / "storage"
 REPORTS_DIR = STORAGE_DIR / "reports"
 REPORTS_DIR.mkdir(parents=True, exist_ok=True)
+logger = logging.getLogger("acceptance_backend")
+logging.basicConfig(level=logging.INFO)
 
 
 def load_dotenv(path: Path) -> None:
@@ -40,7 +44,7 @@ def normalize_api_key(raw_value: str) -> str:
     return value
 
 
-load_dotenv(ROOT_DIR / "backend" / ".env")
+load_dotenv(ROOT_DIR / ".env")
 
 KIMI_API_KEY = normalize_api_key(os.getenv("KIMI_API_KEY", ""))
 KIMI_BASE_URL = os.getenv("KIMI_BASE_URL", "https://api.moonshot.cn/v1").rstrip("/")
@@ -182,6 +186,7 @@ class ExternalVerificationService:
 
     def _verify_with_kimi(self, report: StoredReport) -> VerifyResponse:
         try:
+            logger.info("Starting Kimi verification for report %s", report.id)
             payload = build_kimi_payload(report, model=self.kimi_model)
             response = request.urlopen(
                 request.Request(
@@ -193,16 +198,19 @@ class ExternalVerificationService:
                     data=json.dumps(payload).encode("utf-8"),
                     method="POST",
                 ),
-                timeout=90,
+                timeout=25,
             )
             raw = json.loads(response.read().decode("utf-8"))
             parsed_text = extract_kimi_content(raw)
             parsed = parse_json_payload(parsed_text)
+            logger.info("Kimi verification succeeded for report %s", report.id)
             return build_verify_response(report.id, parsed)
         except error.HTTPError as exc:
             details = exc.read().decode("utf-8", errors="ignore")
+            logger.error("Kimi HTTP error for report %s: %s", report.id, details)
             raise HTTPException(status_code=502, detail=f"Kimi API error: {details}") from exc
         except Exception as exc:
+            logger.exception("Kimi verification failed for report %s", report.id)
             raise HTTPException(status_code=500, detail=f"Kimi verification failed: {exc}") from exc
 
     def _verify_with_openai(self, report: StoredReport) -> VerifyResponse:
@@ -218,7 +226,7 @@ class ExternalVerificationService:
                     data=json.dumps(payload).encode("utf-8"),
                     method="POST",
                 ),
-                timeout=90,
+                timeout=25,
             )
             raw = json.loads(response.read().decode("utf-8"))
             parsed_text = extract_output_text(raw)
@@ -512,6 +520,7 @@ def verify_report(report_id: str, payload: VerifyRequest) -> VerifyResponse:
     except KeyError as exc:
         raise HTTPException(status_code=404, detail="Report not found") from exc
 
+    logger.info("Verify requested for report %s", report_id)
     verification = verification_service.verify(report)
     report.status = "verified"
     report.verification = verification

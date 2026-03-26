@@ -178,8 +178,10 @@ struct DefectReportView: View {
 
                 if let verificationError {
                     Text(verificationError)
-                        .font(.caption)
+                        .font(.caption.monospaced())
                         .foregroundStyle(.red)
+                        .textSelection(.enabled)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                 }
 
                 if photos.isEmpty {
