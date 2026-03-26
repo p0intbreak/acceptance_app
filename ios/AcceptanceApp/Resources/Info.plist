@@ -19,13 +19,20 @@
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>API_BASE_URL</key>
-	<string></string>
+	<string>http://68.183.6.233:8000</string>
 	<key>APP_VERIFICATION_MODE</key>
-	<string>mock</string>
+	<string>remote</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Камера нужна, чтобы фотографировать дефекты при приёмке квартиры.</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

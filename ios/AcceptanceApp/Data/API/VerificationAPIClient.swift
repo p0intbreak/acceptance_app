@@ -45,7 +45,7 @@ struct VerificationAPIClient {
         request.httpBody = try JSONEncoder().encode(requestBody)
 
         let (data, response) = try await session.data(for: request)
-        try validate(response: response)
+        try validate(response: response, failure: .reportCreationFailed)
 
         let decoded = try JSONDecoder().decode(CreateReportResponse.self, from: data)
         return decoded.reportId
@@ -61,7 +61,7 @@ struct VerificationAPIClient {
         request.httpBody = multipartData(for: photos, boundary: boundary)
 
         let (_, response) = try await session.data(for: request)
-        try validate(response: response)
+        try validate(response: response, failure: .uploadFailed)
     }
 
     func verify(reportId: String) async throws -> VerificationResult {
@@ -71,7 +71,7 @@ struct VerificationAPIClient {
         request.httpBody = try JSONEncoder().encode(VerifyRequest(mode: "standard"))
 
         let (data, response) = try await session.data(for: request)
-        try validate(response: response)
+        try validate(response: response, failure: .verificationFailed)
 
         let decoded = try JSONDecoder().decode(VerifyResponse.self, from: data)
         return VerificationResult(
@@ -97,7 +97,7 @@ struct VerificationAPIClient {
         return data
     }
 
-    private func validate(response: URLResponse) throws {
+    private func validate(response: URLResponse, failure: VerificationAPIError) throws {
         guard let httpResponse = response as? HTTPURLResponse else {
             throw VerificationAPIError.invalidResponse
         }
@@ -105,9 +105,9 @@ struct VerificationAPIClient {
         guard (200...299).contains(httpResponse.statusCode) else {
             switch httpResponse.statusCode {
             case 400...499:
-                throw VerificationAPIError.reportCreationFailed
+                throw failure
             case 500...599:
-                throw VerificationAPIError.verificationFailed
+                throw failure
             default:
                 throw VerificationAPIError.invalidResponse
             }
