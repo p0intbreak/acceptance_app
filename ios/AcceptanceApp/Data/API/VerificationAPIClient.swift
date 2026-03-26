@@ -163,8 +163,8 @@ private extension Data {
 private extension URLSession {
     static func configuredForVerification() -> URLSession {
         let configuration = URLSessionConfiguration.default
-        configuration.timeoutIntervalForRequest = 20
-        configuration.timeoutIntervalForResource = 35
+        configuration.timeoutIntervalForRequest = 45
+        configuration.timeoutIntervalForResource = 120
         return URLSession(configuration: configuration)
     }
 }

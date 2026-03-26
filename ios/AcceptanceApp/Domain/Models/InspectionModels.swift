@@ -59,6 +59,24 @@ struct DefectPhoto: Identifiable, Hashable {
         guard let uiImage = UIImage(data: imageData) else { return nil }
         return Image(uiImage: uiImage)
     }
+
+    static func optimized(data: Data, filename: String) -> DefectPhoto? {
+        guard let image = UIImage(data: data) else { return nil }
+        return optimized(image: image, filename: filename)
+    }
+
+    static func optimized(image: UIImage, filename: String) -> DefectPhoto? {
+        let preparedImage = image.normalizedOrientation().resizedForUpload(maxDimension: 1600)
+        guard let compressedData = preparedImage.jpegData(compressionQuality: 0.72) else {
+            return nil
+        }
+
+        return DefectPhoto(
+            id: UUID().uuidString,
+            filename: filename,
+            imageData: compressedData
+        )
+    }
 }
 
 struct VerificationResult: Hashable {
@@ -72,4 +90,28 @@ struct VerificationResult: Hashable {
     let confidence: Double
     let explanation: String
     let recommendation: String
+}
+
+private extension UIImage {
+    func resizedForUpload(maxDimension: CGFloat) -> UIImage {
+        let longestSide = max(size.width, size.height)
+        guard longestSide > maxDimension else { return self }
+
+        let scale = maxDimension / longestSide
+        let newSize = CGSize(width: size.width * scale, height: size.height * scale)
+
+        let renderer = UIGraphicsImageRenderer(size: newSize)
+        return renderer.image { _ in
+            draw(in: CGRect(origin: .zero, size: newSize))
+        }
+    }
+
+    func normalizedOrientation() -> UIImage {
+        guard imageOrientation != .up else { return self }
+
+        let renderer = UIGraphicsImageRenderer(size: size)
+        return renderer.image { _ in
+            draw(in: CGRect(origin: .zero, size: size))
+        }
+    }
 }

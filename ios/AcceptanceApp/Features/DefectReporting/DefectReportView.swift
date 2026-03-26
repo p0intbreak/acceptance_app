@@ -184,6 +184,12 @@ struct DefectReportView: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                 }
 
+                if !photos.isEmpty {
+                    Text("Фото автоматически уменьшаются перед отправкой, чтобы проверка на реальном iPhone проходила стабильнее.")
+                        .font(.caption)
+                        .foregroundStyle(DesignTokens.Colors.muted)
+                }
+
                 if photos.isEmpty {
                     Text("Для MVP можно отправить и без фото, но AI-результат будет менее надёжным.")
                         .font(.caption)
@@ -260,12 +266,14 @@ struct DefectReportView: View {
 
             do {
                 if let data = try await item.loadTransferable(type: Data.self) {
-                    let photo = DefectPhoto(
-                        id: UUID().uuidString,
-                        filename: item.itemIdentifier ?? "photo_\(nextPhotos.count + 1).jpeg",
-                        imageData: data
-                    )
-                    nextPhotos.append(photo)
+                    if let photo = DefectPhoto.optimized(
+                        data: data,
+                        filename: item.itemIdentifier ?? "photo_\(nextPhotos.count + 1).jpg"
+                    ) {
+                        nextPhotos.append(photo)
+                    } else {
+                        photoLoadError = "Не удалось подготовить одно из изображений к отправке."
+                    }
                 }
             } catch {
                 photoLoadError = "Не удалось загрузить одно из изображений. Попробуйте выбрать его ещё раз."
@@ -279,18 +287,15 @@ struct DefectReportView: View {
     private func appendCapturedPhoto(_ image: UIImage) {
         guard photos.count < 3 else { return }
 
-        guard let data = image.jpegData(compressionQuality: 0.82) else {
+        guard let photo = DefectPhoto.optimized(
+            image: image,
+            filename: "camera_\(photos.count + 1).jpg"
+        ) else {
             photoLoadError = "Не удалось обработать снимок с камеры."
             return
         }
 
-        photos.append(
-            DefectPhoto(
-                id: UUID().uuidString,
-                filename: "camera_\(photos.count + 1).jpg",
-                imageData: data
-            )
-        )
+        photos.append(photo)
         photoLoadError = nil
     }
 
