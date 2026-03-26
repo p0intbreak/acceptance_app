@@ -1,0 +1,442 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000001 /* AcceptanceApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* AcceptanceApp.swift */; };
+		A10000000000000000000002 /* AppContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* AppContainer.swift */; };
+		A10000000000000000000003 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* RootView.swift */; };
+		A10000000000000000000004 /* DesignTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* DesignTokens.swift */; };
+		A10000000000000000000010 /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000012 /* AppConfig.swift */; };
+		A10000000000000000000011 /* VerificationAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000013 /* VerificationAPIClient.swift */; };
+		A10000000000000000000005 /* InspectionRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* InspectionRepository.swift */; };
+		A10000000000000000000006 /* InspectionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000006 /* InspectionModels.swift */; };
+		A10000000000000000000007 /* MVPPlanSeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000007 /* MVPPlanSeed.swift */; };
+		A10000000000000000000008 /* SubmitReportUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* SubmitReportUseCase.swift */; };
+		A10000000000000000000009 /* DefectReportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000009 /* DefectReportView.swift */; };
+		A1000000000000000000000A /* InspectionListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000A /* InspectionListView.swift */; };
+		A1000000000000000000000B /* InspectionListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000B /* InspectionListViewModel.swift */; };
+		A1000000000000000000000C /* PlanView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000C /* PlanView.swift */; };
+		A1000000000000000000000D /* VerificationResultCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000D /* VerificationResultCard.swift */; };
+		A1000000000000000000000E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000E /* Assets.xcassets */; };
+		A1000000000000000000000F /* CameraCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000011 /* CameraCaptureView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A20000000000000000000001 /* AcceptanceApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcceptanceApp.swift; sourceTree = "<group>"; };
+		A20000000000000000000002 /* AppContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppContainer.swift; sourceTree = "<group>"; };
+		A20000000000000000000003 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		A20000000000000000000004 /* DesignTokens.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignTokens.swift; sourceTree = "<group>"; };
+		A20000000000000000000012 /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		A20000000000000000000013 /* VerificationAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationAPIClient.swift; sourceTree = "<group>"; };
+		A20000000000000000000005 /* InspectionRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionRepository.swift; sourceTree = "<group>"; };
+		A20000000000000000000006 /* InspectionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionModels.swift; sourceTree = "<group>"; };
+		A20000000000000000000007 /* MVPPlanSeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVPPlanSeed.swift; sourceTree = "<group>"; };
+		A20000000000000000000008 /* SubmitReportUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitReportUseCase.swift; sourceTree = "<group>"; };
+		A20000000000000000000009 /* DefectReportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefectReportView.swift; sourceTree = "<group>"; };
+		A2000000000000000000000A /* InspectionListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionListView.swift; sourceTree = "<group>"; };
+		A2000000000000000000000B /* InspectionListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectionListViewModel.swift; sourceTree = "<group>"; };
+		A2000000000000000000000C /* PlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanView.swift; sourceTree = "<group>"; };
+		A2000000000000000000000D /* VerificationResultCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerificationResultCard.swift; sourceTree = "<group>"; };
+		A2000000000000000000000E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A2000000000000000000000F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A20000000000000000000010 /* AcceptanceApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AcceptanceApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A20000000000000000000011 /* CameraCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCaptureView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A30000000000000000000001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A40000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				A40000000000000000000002 /* ios/AcceptanceApp */,
+				A40000000000000000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A40000000000000000000002 /* ios/AcceptanceApp */ = {
+			isa = PBXGroup;
+			children = (
+				A40000000000000000000004 /* App */,
+				A40000000000000000000005 /* Core */,
+				A40000000000000000000006 /* Data */,
+				A40000000000000000000007 /* Domain */,
+				A40000000000000000000008 /* Features */,
+				A40000000000000000000012 /* Shared */,
+				A40000000000000000000009 /* Resources */,
+			);
+			path = ios/AcceptanceApp;
+			sourceTree = SOURCE_ROOT;
+		};
+		A40000000000000000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000010 /* AcceptanceApp.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000004 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000001 /* AcceptanceApp.swift */,
+				A20000000000000000000012 /* AppConfig.swift */,
+				A20000000000000000000002 /* AppContainer.swift */,
+				A20000000000000000000003 /* RootView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000005 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				A4000000000000000000000A /* DesignSystem */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000006 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				A40000000000000000000014 /* API */,
+				A4000000000000000000000B /* Repositories */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000007 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				A4000000000000000000000C /* Models */,
+				A4000000000000000000000D /* UseCases */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000008 /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				A4000000000000000000000E /* InspectionList */,
+				A4000000000000000000000F /* PlanViewer */,
+				A40000000000000000000010 /* DefectReporting */,
+				A40000000000000000000011 /* Verification */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000009 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000E /* Assets.xcassets */,
+				A2000000000000000000000F /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		A4000000000000000000000A /* DesignSystem */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000004 /* DesignTokens.swift */,
+			);
+			path = DesignSystem;
+			sourceTree = "<group>";
+		};
+		A4000000000000000000000B /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000005 /* InspectionRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000014 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000013 /* VerificationAPIClient.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		A4000000000000000000000C /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000006 /* InspectionModels.swift */,
+				A20000000000000000000007 /* MVPPlanSeed.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A4000000000000000000000D /* UseCases */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000008 /* SubmitReportUseCase.swift */,
+			);
+			path = UseCases;
+			sourceTree = "<group>";
+		};
+		A4000000000000000000000E /* InspectionList */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000A /* InspectionListView.swift */,
+				A2000000000000000000000B /* InspectionListViewModel.swift */,
+			);
+			path = InspectionList;
+			sourceTree = "<group>";
+		};
+		A4000000000000000000000F /* PlanViewer */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000C /* PlanView.swift */,
+			);
+			path = PlanViewer;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000010 /* DefectReporting */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000009 /* DefectReportView.swift */,
+			);
+			path = DefectReporting;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000011 /* Verification */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000D /* VerificationResultCard.swift */,
+			);
+			path = Verification;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000012 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				A40000000000000000000013 /* Camera */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		A40000000000000000000013 /* Camera */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000011 /* CameraCaptureView.swift */,
+			);
+			path = Camera;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A50000000000000000000001 /* AcceptanceApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A70000000000000000000002 /* Build configuration list for PBXNativeTarget "AcceptanceApp" */;
+			buildPhases = (
+				A30000000000000000000002 /* Sources */,
+				A30000000000000000000001 /* Frameworks */,
+				A30000000000000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AcceptanceApp;
+			productName = AcceptanceApp;
+			productReference = A20000000000000000000010 /* AcceptanceApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A60000000000000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					A50000000000000000000001 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = A70000000000000000000001 /* Build configuration list for PBXProject "AcceptanceApp" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A40000000000000000000001;
+			productRefGroup = A40000000000000000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A50000000000000000000001 /* AcceptanceApp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A30000000000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000000000000000000000E /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A30000000000000000000002 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000001 /* AcceptanceApp.swift in Sources */,
+				A10000000000000000000010 /* AppConfig.swift in Sources */,
+				A10000000000000000000002 /* AppContainer.swift in Sources */,
+				A10000000000000000000003 /* RootView.swift in Sources */,
+				A10000000000000000000004 /* DesignTokens.swift in Sources */,
+				A10000000000000000000011 /* VerificationAPIClient.swift in Sources */,
+				A10000000000000000000005 /* InspectionRepository.swift in Sources */,
+				A10000000000000000000006 /* InspectionModels.swift in Sources */,
+				A10000000000000000000007 /* MVPPlanSeed.swift in Sources */,
+				A10000000000000000000008 /* SubmitReportUseCase.swift in Sources */,
+				A10000000000000000000009 /* DefectReportView.swift in Sources */,
+				A1000000000000000000000A /* InspectionListView.swift in Sources */,
+				A1000000000000000000000B /* InspectionListViewModel.swift in Sources */,
+				A1000000000000000000000C /* PlanView.swift in Sources */,
+				A1000000000000000000000D /* VerificationResultCard.swift in Sources */,
+				A1000000000000000000000F /* CameraCaptureView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A80000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 68G6KKXSMJ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ios/AcceptanceApp/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.p0intbreak.acceptanceapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		A80000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 68G6KKXSMJ;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = ios/AcceptanceApp/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.p0intbreak.acceptanceapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		A80000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		A80000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A70000000000000000000001 /* Build configuration list for PBXProject "AcceptanceApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A80000000000000000000003 /* Debug */,
+				A80000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A70000000000000000000002 /* Build configuration list for PBXNativeTarget "AcceptanceApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A80000000000000000000001 /* Debug */,
+				A80000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A60000000000000000000001 /* Project object */;
+}
