@@ -42,6 +42,9 @@ def normalize_api_key(raw_value: str) -> str:
 
 load_dotenv(ROOT_DIR / "backend" / ".env")
 
+KIMI_API_KEY = normalize_api_key(os.getenv("KIMI_API_KEY", ""))
+KIMI_BASE_URL = os.getenv("KIMI_BASE_URL", "https://api.moonshot.cn/v1").rstrip("/")
+KIMI_MODEL = os.getenv("KIMI_MODEL", "kimi-k2.5")
 OPENAI_API_KEY = normalize_api_key(os.getenv("OPENAI_API_KEY", ""))
 OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
 
@@ -153,22 +156,63 @@ class ReportStore:
         return StoredReport.model_validate_json(report_file.read_text(encoding="utf-8"))
 
 
-class OpenAIVerificationService:
-    def __init__(self, api_key: str, model: str) -> None:
-        self.api_key = api_key
-        self.model = model
+class ExternalVerificationService:
+    def __init__(
+        self,
+        kimi_api_key: str,
+        kimi_base_url: str,
+        kimi_model: str,
+        openai_api_key: str,
+        openai_model: str,
+    ) -> None:
+        self.kimi_api_key = kimi_api_key
+        self.kimi_base_url = kimi_base_url
+        self.kimi_model = kimi_model
+        self.openai_api_key = openai_api_key
+        self.openai_model = openai_model
 
     def verify(self, report: StoredReport) -> VerifyResponse:
-        if not self.api_key:
-            return heuristic_verification(report)
+        if self.kimi_api_key:
+            return self._verify_with_kimi(report)
 
+        if self.openai_api_key:
+            return self._verify_with_openai(report)
+
+        return heuristic_verification(report)
+
+    def _verify_with_kimi(self, report: StoredReport) -> VerifyResponse:
         try:
-            payload = build_openai_payload(report, model=self.model)
+            payload = build_kimi_payload(report, model=self.kimi_model)
+            response = request.urlopen(
+                request.Request(
+                    url=f"{self.kimi_base_url}/chat/completions",
+                    headers={
+                        "Authorization": f"Bearer {self.kimi_api_key}",
+                        "Content-Type": "application/json",
+                    },
+                    data=json.dumps(payload).encode("utf-8"),
+                    method="POST",
+                ),
+                timeout=90,
+            )
+            raw = json.loads(response.read().decode("utf-8"))
+            parsed_text = extract_kimi_content(raw)
+            parsed = parse_json_payload(parsed_text)
+            return build_verify_response(report.id, parsed)
+        except error.HTTPError as exc:
+            details = exc.read().decode("utf-8", errors="ignore")
+            raise HTTPException(status_code=502, detail=f"Kimi API error: {details}") from exc
+        except Exception as exc:
+            raise HTTPException(status_code=500, detail=f"Kimi verification failed: {exc}") from exc
+
+    def _verify_with_openai(self, report: StoredReport) -> VerifyResponse:
+        try:
+            payload = build_openai_payload(report, model=self.openai_model)
             response = request.urlopen(
                 request.Request(
                     url="https://api.openai.com/v1/responses",
                     headers={
-                        "Authorization": f"Bearer {self.api_key}",
+                        "Authorization": f"Bearer {self.openai_api_key}",
                         "Content-Type": "application/json",
                     },
                     data=json.dumps(payload).encode("utf-8"),
@@ -178,21 +222,13 @@ class OpenAIVerificationService:
             )
             raw = json.loads(response.read().decode("utf-8"))
             parsed_text = extract_output_text(raw)
-            parsed = json.loads(parsed_text)
-
-            return VerifyResponse(
-                reportId=report.id,
-                verdict=parsed["verdict"],
-                confidence=float(parsed["confidence"]),
-                explanation=parsed["explanation"],
-                recommendation=parsed["recommendation"],
-                checkedAt=iso_now(),
-            )
+            parsed = parse_json_payload(parsed_text)
+            return build_verify_response(report.id, parsed)
         except error.HTTPError as exc:
             details = exc.read().decode("utf-8", errors="ignore")
             raise HTTPException(status_code=502, detail=f"OpenAI API error: {details}") from exc
-        except Exception as exc:  # pragma: no cover - MVP fallback path
-            raise HTTPException(status_code=500, detail=f"Verification failed: {exc}") from exc
+        except Exception as exc:
+            raise HTTPException(status_code=500, detail=f"OpenAI verification failed: {exc}") from exc
 
 
 def build_openai_payload(report: StoredReport, model: str) -> dict:
@@ -266,6 +302,52 @@ def build_openai_payload(report: StoredReport, model: str) -> dict:
     }
 
 
+def build_kimi_payload(report: StoredReport, model: str) -> dict:
+    user_content: list[dict[str, object]] = [
+        {
+            "type": "text",
+            "text": (
+                "Проверь, подтверждается ли дефект на фотографиях. "
+                f"Элемент квартиры: {report.planElementId}. "
+                f"Комментарий пользователя: {report.comment}"
+            ),
+        }
+    ]
+
+    for photo in report.photos:
+        image_path = Path(photo.path)
+        image_b64 = base64.b64encode(image_path.read_bytes()).decode("utf-8")
+        user_content.append(
+            {
+                "type": "image_url",
+                "image_url": {
+                    "url": f"data:{photo.mimeType};base64,{image_b64}",
+                },
+            }
+        )
+
+    return {
+        "model": model,
+        "temperature": 0.1,
+        "messages": [
+            {
+                "role": "system",
+                "content": (
+                    "Ты проверяешь дефекты квартиры по 1-3 фотографиям и общему комментарию. "
+                    "Верни только JSON без markdown и пояснений вокруг него. "
+                    "Поля: verdict, confidence, explanation, recommendation. "
+                    "verdict должен быть одним из: confirmed, doubtful, notEnoughEvidence. "
+                    "confidence должен быть числом от 0 до 1."
+                ),
+            },
+            {
+                "role": "user",
+                "content": user_content,
+            },
+        ],
+    }
+
+
 def extract_output_text(raw_response: dict) -> str:
     for item in raw_response.get("output", []):
         if item.get("type") != "message":
@@ -274,6 +356,42 @@ def extract_output_text(raw_response: dict) -> str:
             if content.get("type") == "output_text":
                 return content.get("text", "")
     raise ValueError("No output_text found in OpenAI response")
+
+
+def extract_kimi_content(raw_response: dict) -> str:
+    choices = raw_response.get("choices", [])
+    if not choices:
+        raise ValueError("No choices found in Kimi response")
+
+    message = choices[0].get("message", {})
+    content = message.get("content", "")
+    if isinstance(content, str):
+        return content
+    raise ValueError("No textual content found in Kimi response")
+
+
+def parse_json_payload(raw_text: str) -> dict:
+    text = raw_text.strip()
+    if text.startswith("```"):
+        text = text.strip("`")
+        if text.startswith("json"):
+            text = text[4:].strip()
+    start = text.find("{")
+    end = text.rfind("}")
+    if start == -1 or end == -1:
+        raise ValueError("No JSON object found in model response")
+    return json.loads(text[start : end + 1])
+
+
+def build_verify_response(report_id: str, parsed: dict) -> VerifyResponse:
+    return VerifyResponse(
+        reportId=report_id,
+        verdict=parsed["verdict"],
+        confidence=float(parsed["confidence"]),
+        explanation=parsed["explanation"],
+        recommendation=parsed["recommendation"],
+        checkedAt=iso_now(),
+    )
 
 
 def heuristic_verification(report: StoredReport) -> VerifyResponse:
@@ -312,7 +430,13 @@ def iso_now() -> str:
 
 
 store = ReportStore(REPORTS_DIR)
-verification_service = OpenAIVerificationService(api_key=OPENAI_API_KEY, model=OPENAI_MODEL)
+verification_service = ExternalVerificationService(
+    kimi_api_key=KIMI_API_KEY,
+    kimi_base_url=KIMI_BASE_URL,
+    kimi_model=KIMI_MODEL,
+    openai_api_key=OPENAI_API_KEY,
+    openai_model=OPENAI_MODEL,
+)
 
 app = FastAPI(title="Acceptance App Backend", version="0.1.0")
 app.add_middleware(
@@ -326,7 +450,13 @@ app.add_middleware(
 
 @app.get("/health")
 def health() -> dict[str, str]:
-    return {"status": "ok", "mode": "remote" if OPENAI_API_KEY else "mock"}
+    if KIMI_API_KEY:
+        mode = "remote-kimi"
+    elif OPENAI_API_KEY:
+        mode = "remote-openai"
+    else:
+        mode = "mock"
+    return {"status": "ok", "mode": mode}
 
 
 @app.post("/v1/reports", response_model=CreateReportResponse)

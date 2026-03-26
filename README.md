@@ -44,7 +44,7 @@ backend/
 - API contracts for report creation and AI verification
 - real MVP plan image in `assets/plans/apartment_plan_mvp.jpeg`
 - remote verification client with mock/remote switch via `Info.plist`
-- FastAPI backend for report creation, photo upload, and OpenAI-based verification
+- FastAPI backend for report creation, photo upload, and Kimi/OpenAI-based verification
 
 ## Running The Backend
 
@@ -67,10 +67,14 @@ If `OPENAI_API_KEY` is not set, the backend still runs but falls back to heurist
 ## Deployed Backend
 
 - Current public backend URL: `http://68.183.6.233:8000`
-- Current health response: `{"status":"ok","mode":"mock"}`
+- Current health response: `{"status":"ok","mode":"remote-kimi"}`
 - Server process: `systemd` service `acceptance_backend`
 - Deployment path on server: `/root/acceptance_app`
-- To switch from heuristic mode to real OpenAI verification, set a valid `OPENAI_API_KEY` in `/root/acceptance_app/.env` and restart the service:
+- Backend supports:
+  - `KIMI_API_KEY`, `KIMI_BASE_URL`, `KIMI_MODEL`
+  - `OPENAI_API_KEY`, `OPENAI_MODEL`
+- Current deployment uses Kimi through Moonshot `chat/completions`
+- To switch provider settings, update `/root/acceptance_app/.env` and restart the service:
 
 ```bash
 ssh root@68.183.6.233
@@ -87,7 +91,7 @@ systemctl restart acceptance_backend
 
 ## Next Steps
 
-1. Put a real `OPENAI_API_KEY` into `/root/acceptance_app/.env`.
+1. Adjust `KIMI_MODEL` or provider settings in `/root/acceptance_app/.env` if needed.
 2. Restart `acceptance_backend` on the server.
 3. Rebuild the iPhone app with the current `Info.plist`.
 4. Test the full chain with real photos from the device.
